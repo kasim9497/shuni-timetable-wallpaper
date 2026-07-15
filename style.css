@@ -1,0 +1,505 @@
+/* =====================================================
+   Google Fonts Import
+===================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =====================================================
+   Design Tokens
+===================================================== */
+:root {
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+  --s5: 24px; --s6: 32px; --s7: 48px;
+
+  --blue:       #007AFF;
+  --blue-light: rgba(0, 122, 255, 0.10);
+  --blue-glow:  rgba(0, 122, 255, 0.22);
+  --red:        #FF3B30;
+  --green:      #34C759;
+
+  --bg-app:     #F2F2F7;
+  --surface:    #FFFFFF;
+  --surface-2:  #F5F5F7;
+  --border:     rgba(0, 0, 0, 0.09);
+  --border-2:   rgba(0, 0, 0, 0.05);
+
+  --txt-primary:   #0F0F10;
+  --txt-secondary: #8A8A8E;
+  --txt-tertiary:  #AEAEB2;
+
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.07);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 48px rgba(0,0,0,0.10);
+  --shadow-xl: 0 32px 64px rgba(0,0,0,0.14);
+
+  --r-sm:  8px; --r-md: 12px; --r-lg: 18px;
+  --r-xl: 24px; --r-2xl: 32px; --r-pill: 999px;
+
+  --ease-fast:   0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-normal: 0.30s cubic-bezier(0.16, 1, 0.3, 1);
+
+  --z-canvas:  1; --z-grid: 5; --z-overlay: 10;
+  --z-panel: 20; --z-toast: 30;
+
+  /* canvas dynamic vars */
+  --selected-font: 'Inter', -apple-system, sans-serif;
+  --canvas-text-color: #1D1D1F;
+  --course-text-color: #1D1D1F;
+
+  /* legacy token aliases for JS compat */
+  --token-space-1: 4px; --token-space-2: 8px;
+  --token-space-3: 12px; --token-space-4: 16px;
+  --token-space-5: 24px; --token-space-6: 32px;
+  --token-blue: #007AFF;
+  --token-surface: #FFFFFF;
+  --token-border: rgba(0,0,0,0.09);
+  --token-text-primary: #0F0F10;
+  --token-text-secondary: #8A8A8E;
+  --token-transition-fast: 0.15s cubic-bezier(0.16,1,0.3,1);
+  --token-transition-normal: 0.30s cubic-bezier(0.16,1,0.3,1);
+  --token-bg-dashboard: #F2F2F7;
+  --token-z-canvas: 1; --token-z-grid: 5; --token-z-overlay: 10;
+  --token-z-panel: 20; --token-z-toast: 30;
+}
+
+/* =====================================================
+   Theme Config
+===================================================== */
+[data-theme="glass"]    { --course-bg: rgba(255,255,255,0.82); }
+[data-theme="white"]    { --course-bg: rgba(255,255,255,0.97); }
+[data-theme="dark"]     { --course-bg: rgba(38,38,42,0.92); }
+[data-theme="academic"] { --course-bg: rgba(253,251,247,0.95); }
+[data-theme="minimal"]  { --course-bg: rgba(255,255,255,0.50); }
+[data-theme="colorful"] { --course-bg: rgba(255,255,255,0.82); }
+
+/* =====================================================
+   Reset
+===================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* =====================================================
+   Base
+===================================================== */
+body {
+  background: var(--bg-app);
+  color: var(--txt-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px; line-height: 1.5;
+  min-height: 100vh;
+  padding: var(--s6) var(--s4);
+  display: flex; justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-viewport {
+  display: grid;
+  grid-template-columns: 4.2fr 5.8fr;
+  gap: var(--s5);
+  max-width: 1300px; width: 100%;
+  align-items: start;
+}
+
+/* =====================================================
+   Preview Column
+===================================================== */
+.preview-container {
+  display: flex; flex-direction: column;
+  align-items: center; gap: var(--s4);
+  position: sticky; top: var(--s5);
+}
+
+/* =====================================================
+   Phone Shell
+===================================================== */
+.phone-shell {
+  position: relative; width: 315px; height: 680px;
+  border-radius: 48px;
+  background: #1c1c1e;
+  box-shadow:
+    0 0 0 10px #1d1d1f,
+    0 0 0 11px rgba(255,255,255,0.06),
+    var(--shadow-xl),
+    0 0 80px rgba(0,122,255,0.06);
+  overflow: hidden;
+  transition: all var(--ease-normal);
+}
+.phone-shell::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 55%);
+  z-index: 100; pointer-events: none;
+}
+
+/* =====================================================
+   Wallpaper Canvas
+===================================================== */
+.wallpaper-canvas {
+  width: 100%; height: 100%;
+  background-size: cover; background-position: center;
+  display: flex; flex-direction: column;
+  padding: 0 var(--s4);
+  position: relative; z-index: var(--z-canvas);
+  transition: background var(--ease-normal);
+  color: var(--canvas-text-color) !important;
+  font-family: var(--selected-font) !important;
+}
+
+.canvas-dim-overlay {
+  position: absolute; inset: 0;
+  background-color: rgba(0,0,0,0);
+  z-index: 1; pointer-events: none;
+  transition: background-color var(--ease-normal);
+}
+
+/* =====================================================
+   iOS Overlay
+===================================================== */
+.ui-preview-overlay {
+  position: absolute; inset: 0;
+  z-index: var(--z-overlay); pointer-events: none;
+  transition: opacity var(--ease-normal);
+  color: var(--canvas-text-color) !important;
+}
+.ios-status-bar {
+  position: absolute; top: 14px; width: 100%;
+  padding: 0 28px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; font-weight: 600; color: inherit;
+}
+.ios-status-icons { display: flex; gap: 4px; align-items: center; }
+.ios-status-icons svg { width: 13px; height: 13px; fill: currentColor; }
+.ios-dynamic-island {
+  position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+  width: 85px; height: 22px;
+  background: #000; border-radius: 20px;
+}
+.ios-lock-screen-time {
+  position: absolute; top: var(--dynamic-safe-top, 76px);
+  left: 0; width: 100%; text-align: center;
+  color: inherit; transition: top var(--ease-normal);
+}
+.ios-lock-screen-time .ios-date { font-size: 14px; font-weight: 600; opacity: 0.9; letter-spacing: 0.04em; }
+.ios-lock-screen-time .ios-clock { font-size: 56px; margin-top: var(--s1); font-weight: 700 !important; letter-spacing: -0.03em; }
+.ios-lock-screen-bottom { position: absolute; bottom: 30px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 32px; }
+.ios-btn-shadow {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.ios-icon-svg { width: 18px; height: 18px; fill: currentColor; }
+.ios-home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; background: currentColor; opacity: 0.55; border-radius: 2px; }
+
+/* =====================================================
+   Timetable Grid
+===================================================== */
+.timetable-mesh-wrapper {
+  position: absolute; bottom: 90px;
+  width: calc(100% - 12px);
+  left: 6px;
+  max-height: 52%;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  z-index: var(--z-grid);
+}
+.timetable-mesh { display: grid; grid-template-columns: 38px repeat(var(--visible-days-count, 5), 1fr); gap: 6px; width: 100%; }
+.mesh-node { display: flex; align-items: center; justify-content: center; font-size: 10px; border-radius: 6px; text-align: center; color: inherit; }
+.node-header { font-weight: 700; opacity: 0.85; font-size: 11px; padding-bottom: var(--s1); text-transform: uppercase; letter-spacing: 0.04em; }
+.node-time { font-size: 9px; font-weight: 600; line-height: 1.15; white-space: pre-line; opacity: 0.6; }
+.node-course {
+  background: var(--course-bg);
+  box-shadow: var(--course-shadow); border-radius: var(--course-radius);
+  color: var(--course-text-color, inherit) !important;
+  padding: var(--s1) 2px; line-height: 1.2; height: 100%;
+  font-size: var(--grid-font-size); transition: all var(--ease-normal);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+/* =====================================================
+   Toast
+===================================================== */
+.ios-toast-notification {
+  position: absolute; bottom: 85px;
+  left: 50%; transform: translateX(-50%) scale(0.88) translateY(8px);
+  background: rgba(20,20,22,0.88);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  color: #FFF; padding: 10px 22px;
+  font-size: 13px; font-weight: 600; border-radius: 22px;
+  z-index: var(--z-toast); opacity: 0; pointer-events: none;
+  transition: all var(--ease-normal); white-space: nowrap;
+}
+.ios-toast-notification.show { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+
+/* =====================================================
+   Panel Column
+===================================================== */
+.panel-container { display: flex; flex-direction: column; gap: var(--s4); z-index: var(--z-panel); }
+
+/* =====================================================
+   Hero
+===================================================== */
+.hero-meta { padding: var(--s2) 0 var(--s1); }
+.hero-meta h2 {
+  font-size: 27px; font-weight: 800; letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #0F0F10 0%, #3C3C43 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: var(--s1); line-height: 1.15;
+}
+.hero-meta p { font-size: 13px; color: var(--txt-secondary); font-weight: 400; letter-spacing: -0.01em; }
+
+/* =====================================================
+   Tab Bar
+===================================================== */
+.hig-tab-bar {
+  display: flex;
+  background: rgba(120,120,128,0.12);
+  padding: 3px; border-radius: var(--r-lg); gap: 2px;
+}
+.hig-tab-item {
+  flex: 1; text-align: center; padding: 9px 4px;
+  font-size: 12px; font-weight: 600; font-family: inherit;
+  color: var(--txt-secondary); border: none; background: none;
+  cursor: pointer; border-radius: calc(var(--r-lg) - 2px);
+  transition: all var(--ease-fast); letter-spacing: -0.01em;
+}
+.hig-tab-item:hover:not(.active) { color: var(--txt-primary); }
+.hig-tab-item.active {
+  background: var(--surface); color: var(--txt-primary);
+  font-weight: 700; box-shadow: var(--shadow-sm);
+}
+
+/* =====================================================
+   Tab Content
+===================================================== */
+.hig-tab-content {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-2xl); padding: var(--s5);
+  box-shadow: var(--shadow-md); min-height: 420px;
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: panelFadeIn var(--ease-normal) both; }
+
+.panel-title {
+  font-size: 15px; font-weight: 700; letter-spacing: -0.03em;
+  color: var(--txt-primary); margin-bottom: var(--s4);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.form-item { margin-bottom: var(--s4); }
+.form-item:last-child { margin-bottom: 0; }
+
+label {
+  display: block; font-size: 10.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--txt-secondary); margin-bottom: var(--s2);
+}
+
+/* =====================================================
+   Form Controls
+===================================================== */
+select, input[type="text"], input[type="number"] {
+  width: 100%; padding: 11px var(--s3);
+  border-radius: var(--r-md); border: 1px solid var(--border);
+  background: var(--surface-2); font-size: 13.5px; font-weight: 600;
+  font-family: inherit; color: var(--txt-primary);
+  outline: none; appearance: none; -webkit-appearance: none;
+  transition: border-color var(--ease-fast), box-shadow var(--ease-fast);
+  letter-spacing: -0.01em;
+}
+select:focus, input[type="text"]:focus, input[type="number"]:focus {
+  border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-glow); background: var(--surface);
+}
+select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%238A8A8E' d='M0 0l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat; background-position: right 14px center; padding-right: 32px;
+}
+
+/* =====================================================
+   Option Buttons
+===================================================== */
+.option-button-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s2); }
+.opt-btn {
+  padding: 9px 4px; font-size: 11.5px; font-weight: 600; font-family: inherit;
+  text-align: center; border-radius: var(--r-sm);
+  border: 1px solid var(--border); background: var(--surface-2);
+  color: var(--txt-secondary); cursor: pointer;
+  transition: all var(--ease-fast);
+  letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.opt-btn:hover:not(.active) { border-color: rgba(0,122,255,0.3); color: var(--blue); background: var(--blue-light); transform: translateY(-1px); }
+.opt-btn.active { background: var(--blue); color: #FFF; border-color: var(--blue); box-shadow: 0 3px 10px var(--blue-glow); transform: translateY(-1px); }
+
+/* =====================================================
+   Background Presets
+===================================================== */
+.bg-preset-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s2); margin-bottom: var(--s3); }
+.bg-thumb {
+  height: 56px; border-radius: var(--r-sm);
+  border: 2px solid transparent; cursor: pointer;
+  background-size: cover; background-position: center;
+  transition: all var(--ease-fast); position: relative; overflow: hidden;
+}
+.bg-thumb:hover { transform: scale(1.06); box-shadow: var(--shadow-sm); }
+.bg-thumb.active { border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue), 0 4px 12px var(--blue-glow); transform: scale(1.06); }
+
+/* =====================================================
+   Advanced Toggle
+===================================================== */
+.advanced-toggle {
+  display: flex; align-items: center; gap: var(--s2);
+  font-size: 12px; font-weight: 700; color: var(--blue);
+  cursor: pointer; margin-top: var(--s4); user-select: none;
+  letter-spacing: -0.01em; padding: var(--s2) 0;
+  border-top: 1px solid var(--border-2);
+  transition: opacity var(--ease-fast);
+}
+.advanced-toggle:hover { opacity: 0.7; }
+.advanced-panel { display: none; margin-top: var(--s3); }
+.advanced-panel.open { display: block; animation: panelFadeIn var(--ease-normal) both; }
+
+/* =====================================================
+   Slider Items — Premium
+===================================================== */
+.slider-item {
+  display: flex; align-items: center; gap: var(--s3);
+  justify-content: space-between;
+  margin-bottom: var(--s2);
+  padding: 10px var(--s3);
+  background: var(--surface-2); border-radius: var(--r-md);
+  border: 1px solid var(--border-2);
+}
+.slider-item:last-of-type { margin-bottom: 0; }
+.slider-item > span {
+  font-size: 12px; font-weight: 600; color: var(--txt-primary);
+  white-space: nowrap; flex: 0 0 auto; letter-spacing: -0.01em;
+  /* override label uppercase */
+  text-transform: none; letter-spacing: 0;
+}
+.slider-item input[type="range"] { flex: 1; }
+
+/* Slider value badge */
+.slider-val {
+  font-size: 11px; font-weight: 700; color: var(--blue);
+  background: var(--blue-light); padding: 2px 7px;
+  border-radius: var(--r-pill); min-width: 32px; text-align: center;
+  flex: 0 0 auto; transition: all var(--ease-fast);
+}
+
+/* Custom range */
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  height: 4px; border-radius: var(--r-pill);
+  background: var(--border); outline: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--surface); border: 2.5px solid var(--blue);
+  box-shadow: 0 2px 8px var(--blue-glow); cursor: pointer;
+  transition: all var(--ease-fast);
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); box-shadow: 0 3px 14px var(--blue-glow); }
+input[type="range"]::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--surface); border: 2.5px solid var(--blue);
+  box-shadow: 0 2px 8px var(--blue-glow); cursor: pointer;
+}
+input[type="range"]:focus::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--blue-glow); }
+
+/* =====================================================
+   Custom Size
+===================================================== */
+.custom-size-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s2); margin-top: var(--s2); }
+.custom-size-inputs > div { display: flex; flex-direction: column; gap: 4px; }
+
+/* =====================================================
+   Course Row
+===================================================== */
+.course-dynamic-row {
+  display: grid;
+  grid-template-columns: 20px 2fr 1.3fr 0.8fr 0.8fr 0.7fr 0.7fr 32px 32px;
+  gap: 6px; margin-bottom: var(--s2); align-items: center;
+  padding: 10px var(--s3);
+  background: var(--surface-2); border-radius: var(--r-md);
+  border: 1px solid var(--border-2);
+  transition: border-color var(--ease-fast), box-shadow var(--ease-fast);
+}
+.course-dynamic-row:hover { border-color: var(--border); box-shadow: var(--shadow-xs); }
+.course-dynamic-row input[type="text"],
+.course-dynamic-row input[type="number"],
+.course-dynamic-row select {
+  padding: 6px 6px; font-size: 11px; font-weight: 600;
+  border-radius: var(--r-sm); text-align: center; background: var(--surface); min-width: 0;
+}
+
+input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--blue); cursor: pointer; }
+
+.color-picker-wrapper {
+  width: 32px; height: 32px; border-radius: var(--r-sm);
+  border: 2px solid var(--border); overflow: hidden; cursor: pointer;
+  transition: border-color var(--ease-fast), transform var(--ease-fast);
+}
+.color-picker-wrapper:hover { border-color: var(--blue); transform: scale(1.1); }
+.color-picker-input {
+  width: 200%; height: 200%; border: none; outline: none;
+  transform: translate(-25%, -25%); cursor: pointer; padding: 0;
+}
+
+.btn-delete {
+  width: 30px; height: 30px; border-radius: var(--r-sm);
+  border: none; background: transparent;
+  color: var(--txt-tertiary); font-size: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all var(--ease-fast); line-height: 1; font-family: inherit;
+}
+.btn-delete:hover { background: rgba(255,59,48,0.1); color: var(--red); transform: scale(1.1); }
+
+/* =====================================================
+   Apple Buttons
+===================================================== */
+.btn-apple {
+  min-height: 42px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--r-md); font-size: 14px; font-weight: 700; font-family: inherit;
+  border: none; cursor: pointer; transition: all var(--ease-fast); letter-spacing: -0.02em;
+}
+.btn-apple:active { transform: scale(0.97); }
+
+.btn-apple-primary {
+  background: var(--blue); color: #FFF; width: 100%;
+  box-shadow: 0 4px 16px var(--blue-glow);
+  min-height: 52px; font-size: 15px; border-radius: var(--r-lg);
+}
+.btn-apple-primary:hover { background: #0066DD; box-shadow: 0 6px 22px rgba(0,102,221,0.36); transform: translateY(-1px); }
+
+.btn-apple-secondary {
+  background: var(--surface-2); color: var(--blue);
+  border: 1px solid var(--border); padding: 0 var(--s3);
+  font-size: 12.5px; min-height: 34px;
+}
+.btn-apple-secondary:hover { background: var(--blue-light); border-color: rgba(0,122,255,0.25); }
+
+/* Reset btn */
+#btn-theme-reset {
+  background: rgba(255,59,48,0.06); color: var(--red);
+  border: 1px solid rgba(255,59,48,0.18); width: 100%;
+  margin-top: var(--s3); min-height: 38px; font-size: 13px;
+}
+#btn-theme-reset:hover { background: rgba(255,59,48,0.12); border-color: rgba(255,59,48,0.32); }
+
+/* =====================================================
+   Export
+===================================================== */
+.action-shelf { text-align: center; }
+#download-meta { font-size: 12px; font-weight: 500; color: var(--txt-tertiary); margin-top: var(--s2); letter-spacing: -0.01em; }
+
+/* =====================================================
+   Animations
+===================================================== */
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

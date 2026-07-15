@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="世新大學課表桌布產生器">
+  <title>SHU 課表桌布產生器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;600;700&family=LXGW+WenKai+TC:wght@400;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body>
+
+  <main class="app-viewport">
+
+    <section class="preview-container">
+      <div class="phone-shell" id="phone-shell">
+
+        <div id="wallpaper-target" class="wallpaper-canvas" data-theme="glass">
+          <div class="canvas-dim-overlay" id="canvas-dim-overlay"></div>
+
+          <div class="timetable-mesh-wrapper" id="timetable-wrapper">
+            <div class="timetable-mesh" id="timetable">
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-preview-overlay" id="ui-preview-overlay">
+          <div class="ios-status-bar">
+            <span id="status-bar-time">13:38</span>
+            <div class="ios-status-icons">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.58 10.57 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+              </svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="ios-dynamic-island"></div>
+
+          <div class="ios-lock-screen-time">
+            <div class="ios-date" id="ios-date-label">--月--日 星期幾</div>
+            <div class="ios-clock" id="ios-clock-label">13:38</div>
+          </div>
+
+          <div class="ios-lock-screen-bottom">
+            <div class="ios-btn-shadow">
+              <svg class="ios-icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M14 2H10C8.9 2 8 2.9 8 4V20C8 21.1 8.9 22 10 22H14C15.1 22 16 21.1 16 20V4C16 2.9 15.1 2 14 2ZM12 18C11.17 18 10.5 17.33 10.5 16.5C10.5 15.67 11.17 14.9 12 14.9C12.83 14.9 13.5 15.67 13.5 16.5C13.5 17.33 12.83 18 12 18ZM14 11H10V5H14V11Z" />
+              </svg>
+            </div>
+            <div class="ios-btn-shadow">
+              <svg class="ios-icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V2c0-.55-.45-1-1-1s-1 .45-1 1v1.06C6.83 3.52 3.52 6.83 3.06 11H2c-.55 0-1 .45-1 1s.45 1 1 1h1.06c.46 4.17 3.77 7.48 7.94 7.94V22c0 .55-.45 1 1 1s1-.45 1-1v-1.06c4.17-.46 7.48-3.77 7.94-7.94H22c0-.55-.45-1-1-1s-1 .45-1 1h-1.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="ios-home-indicator"></div>
+        </div>
+
+        <div class="ios-toast-notification" id="ios-toast">下載成功</div>
+      </div>
+    </section>
+
+    <aside class="panel-container">
+      <header class="hero-meta">
+        <h2>世新課表桌布產生器</h2>
+      </header>
+
+      <nav class="hig-tab-bar" id="tab-navigation-bar">
+        <button class="hig-tab-item active" data-tab="0">裝置</button>
+        <button class="hig-tab-item" data-tab="1">背景</button>
+        <button class="hig-tab-item" data-tab="2">風格主題</button>
+        <button class="hig-tab-item" data-tab="3">課表內容</button>
+        <button class="hig-tab-item" data-tab="4">匯出</button>
+      </nav>
+
+      <div class="hig-tab-content">
+
+        <div class="tab-panel active" id="panel-0">
+          <div class="panel-title">選擇您的手機規格</div>
+          <div class="form-item">
+            <label for="phone-model">手機型號</label>
+            <select id="phone-model">
+            </select>
+
+            <div class="custom-size-inputs" id="custom-size-panel" style="display: none;">
+              <div><label for="custom-w">寬度 (px)</label><input type="number" id="custom-w" value="440"></div>
+              <div><label for="custom-h">高度 (px)</label><input type="number" id="custom-h" value="956"></div>
+              <div><label for="custom-safe">安全區 (px)</label><input type="number" id="custom-safe" value="80"></div>
+            </div>
+          </div>
+
+
+
+
+          <div class="form-item">
+            <label>預覽模式</label>
+            <div class="option-button-row" id="preview-toggle-row" style="grid-template-columns: 1fr 1fr;">
+              <button class="opt-btn active" data-preview="real">手機預覽</button>
+              <button class="opt-btn" data-preview="final">最終輸出</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-1">
+          <div class="panel-title">設定桌布背景</div>
+          <div class="form-item">
+            <label>快選內建 12 款高級風格桌布庫</label>
+            <div class="bg-preset-grid" id="bg-preset-grid">
+            </div>
+          </div>
+          <div class="form-item">
+            <label>或 上傳自訂相片背景</label>
+            <input type="file" id="bg-upload" accept="image/*" style="display:none;">
+            <button class="btn-apple btn-apple-secondary" style="width:100%;" id="bg-upload-btn">從本機相片庫讀取...</button>
+          </div>
+
+          <div class="form-item"
+            style="border-top:1px dashed var(--token-border); padding-top:var(--token-space-3); margin-top:var(--token-space-4);">
+            <label>背景遮罩處理 (防止背景花雜文字看不清)</label>
+            <div class="option-button-row" id="mask-toggle-row"
+              style="grid-template-columns: 1fr 1fr; margin-bottom: 12px;">
+              <button class="opt-btn active" data-mask="black">一鍵打暗 (黑色遮罩)</button>
+              <button class="opt-btn" data-mask="white">一鍵調亮 (白色遮罩)</button>
+            </div>
+            <div class="slider-item">
+              <span>遮罩強度 (透明度)</span>
+              <input type="range" id="bg-dim-range" min="0" max="70" value="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-2">
+          <div class="panel-title">精選外觀主題</div>
+          <div class="form-item">
+            <label>一鍵風格切換 (全面連動 data-theme 視覺語言)</label>
+            <div class="option-button-row" id="theme-preset-row"
+              style="grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 16px;">
+              <button class="opt-btn active" data-theme="glass">Apple Glass</button>
+              <button class="opt-btn" data-theme="white">Apple White</button>
+              <button class="opt-btn" data-theme="dark">Apple Dark</button>
+              <button class="opt-btn" data-theme="academic">Academic</button>
+              <button class="opt-btn" data-theme="minimal">Minimal</button>
+              <button class="opt-btn" data-theme="colorful">Colorful</button>
+            </div>
+          </div>
+
+          <div class="form-item">
+            <label for="font-selector">選取桌布排版字體 (Font Family)</label>
+            <select id="font-selector">
+              <option value="standard" selected>標準黑體（Noto Sans TC）</option>
+              <option value="academic">經典襯線（Noto Serif TC）</option>
+              <option value="handwritten">手寫文青（LXGW WenKai TC）</option>
+              <option value="monospace">等寬字型（Monospace）</option>
+            </select>
+          </div>
+
+          <div class="form-item">
+            <label>主文字與時間色彩模式 (黑白雙色連動)</label>
+            <div class="option-button-row" id="textcolor-toggle-row" style="grid-template-columns: 1fr 1fr;">
+              <button class="opt-btn active" data-color="#1D1D1F">黑色模式 (適合淺底)</button>
+              <button class="opt-btn" data-color="#FFFFFF">白色模式 (適合深底)</button>
+            </div>
+          </div>
+
+          <div class="form-item">
+            <label>全域卡片不透明度快選</label>
+            <div class="option-button-row" id="opacity-preset-row">
+              <button class="opt-btn" data-opacity="0.2">20%</button>
+              <button class="opt-btn" data-opacity="0.4">40%</button>
+              <button class="opt-btn active" data-opacity="0.75">75%</button>
+              <button class="opt-btn" data-opacity="0.95">95%</button>
+            </div>
+          </div>
+
+          <div class="advanced-toggle" id="advanced-toggle-trigger">▾ 進階微調</div>
+          <div class="advanced-panel" id="advanced-panel">
+            <div class="slider-item">
+              <span>陰影強度</span>
+              <input type="range" id="slider-shadow" min="0" max="100" value="50" data-key="shadowIntensity">
+              <span class="slider-val" id="val-shadow">50</span>
+            </div>
+
+            <div class="slider-item">
+              <span>課堂字大小</span>
+              <input type="range" id="slider-font-size" min="9" max="18" value="12" data-token="--grid-font-size"
+                data-key="fontSize" data-unit="px">
+              <span class="slider-val" id="val-font-size">12px</span>
+            </div>
+            <div class="slider-item">
+              <span>卡片圓角</span>
+              <input type="range" id="slider-radius" min="2" max="16" value="12" data-token="--course-radius"
+                data-key="borderRadius" data-unit="px">
+              <span class="slider-val" id="val-radius">12px</span>
+            </div>
+            <div class="slider-item">
+              <span>網格列高</span>
+              <input type="range" id="slider-row-height" min="30" max="70" value="52" data-token="--grid-row-height"
+                data-key="rowHeight" data-unit="px">
+              <span class="slider-val" id="val-row-height">52px</span>
+            </div>
+            <button class="btn-apple" id="btn-theme-reset">↺ 恢復預設值</button>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-3">
+          <div class="panel-title">
+            課表編輯器
+            <button class="btn-apple btn-apple-secondary" id="btn-add-course-row">＋ 新增課程</button>
+          </div>
+          <div id="course-list-container">
+          </div>
+        </div>
+
+        <div class="tab-panel" id="panel-4">
+          <div class="panel-title">匯出桌布</div>
+          <div class="form-item">
+            <label for="img-format">輸出格式</label>
+            <select id="img-format">
+              <option value="image/png" selected>PNG（無損，推薦）</option>
+              <option value="image/jpeg">JPG（較小檔案）</option>
+            </select>
+          </div>
+          <div class="action-shelf" style="margin-top: 32px;">
+            <button class="btn-apple btn-apple-primary" id="download-btn">⬇ 下載桌布</button>
+            <p id="download-meta">PNG 格式 • 高解析度 3x 導出</p>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
